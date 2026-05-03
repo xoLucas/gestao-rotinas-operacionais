@@ -5,3 +5,4 @@ __pycache__/
 node_modules/
 dist/
 build/
+db.sqlite3 # SQLite database file, only for tests
