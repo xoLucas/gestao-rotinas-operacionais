@@ -30,3 +30,4 @@ Latitude/longitude: ...
 Status: validada
 
 Importante: a foto não deve ficar diretamente no PostgreSQL. O escopo recomenda Azure Blob Storage, deixando no banco apenas metadados e links.
+- No MVP, você pode usar FileField local. Depois, quando for para produção, troca para Azure Blob Storage.

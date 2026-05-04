@@ -18,6 +18,10 @@ Modelos prováveis:
 OperationalArea
 Geofence
 LocationPoint
+ou
+OperationalArea
+OperationalRoute
+Asset
 
 Exemplo:
 

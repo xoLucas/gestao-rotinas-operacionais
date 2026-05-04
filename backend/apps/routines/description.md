@@ -4,6 +4,17 @@ Responsável pelo cadastro das rotinas e tarefas operacionais.
 
 O escopo exige cadastro de rotinas com nome, descrição, instrução, área de execução, obrigatoriedade de foto e obrigatoriedade de geolocalização.
 
+O Routine deve saber:
+- de qual procedimento ela veio;
+- qual item do procedimento;
+- se é rotina normal ou tarefa crítica;
+- se exige foto;
+- se exige geolocalização;
+- se exige observação;
+- se pode gerar SS;
+- qual área/rota/equipamento está relacionado;
+- qual nível de criticidade.
+
 Soluções desse app:
 
 routines/
@@ -21,12 +32,21 @@ Routine
 RoutineStep
 RoutineRequirement
 
-Exemplo:
+Exemplos:
 
-Rotina: Verificar nível do tanque
-Instrução: Conferir visor lateral e registrar foto
-Área obrigatória: Tanque 01
-Foto obrigatória: Sim
-GPS obrigatório: Sim
+Routine:
+- procedure_item: 8.1.5
+- name: Rota de monitoramento da planta
+- category: Rotina da operação
+- frequency: a cada 4 horas
+- criticality: alta
+- requires_geolocation: true
+- requires_photo: talvez true
+
+Routine:
+- procedure_item: 8.2.3
+- name: Verificar nível da caixa API no início e fim do turno
+- category: Tarefa crítica
+- criticality: crítica
 
 Esse app define o que deve ser feito.

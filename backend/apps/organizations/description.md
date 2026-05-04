@@ -16,16 +16,16 @@ organizations/
 Modelos prováveis:
 
 Company
-Unit
+Station
 Sector
 Team
-TeamMember
 
 Exemplo:
 
-Unidade: Estação X
-Setor: Operação
-Equipe: Turno A
-Operador: João
+Company: Seacrest Petróleo
+Station: ECTFAL - Estação Coletora e Tratamento Fazenda Alegre
+Station: ECTSM8 - Estação Coletora e Tratamento São Mateus 08
+Sector: Operação
+Team: Turno A
 
 Esse app evita que tudo fique bagunçado dentro de accounts.

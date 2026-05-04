@@ -34,3 +34,4 @@ Turno: 07h às 19h
 Gera atividades: 07h, 11h, 15h, 19h
 
 Esse é um dos apps mais importantes do sistema.
+- Mais tarde EVOLUIR para uma tabela específica de calendários

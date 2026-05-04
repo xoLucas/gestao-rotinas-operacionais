@@ -20,9 +20,10 @@ Modelos prováveis:
 
 WorkSession
 RoutineExecution
-ExecutionStatus
-ExecutionObservation
-RoutineClaim
+ExecutionStepResult
+Abnormality
+ServiceRequestRecord
+ShiftReport
 
 Aqui fica o coração operacional.
 
