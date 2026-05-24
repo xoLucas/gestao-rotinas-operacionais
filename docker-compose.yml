@@ -1,0 +1,34 @@
+services:
+  db:
+    image: postgres:16
+    container_name: gestao_rotinas_db
+    environment:
+      POSTGRES_DB: gestao_rotinas
+      POSTGRES_USER: gestao_user
+      POSTGRES_PASSWORD: gestao_password
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    container_name: gestao_rotinas_backend
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+    environment:
+      DEBUG: "True"
+      SECRET_KEY: "dev-secret-key-local"
+      DATABASE_NAME: gestao_rotinas
+      DATABASE_USER: gestao_user
+      DATABASE_PASSWORD: gestao_password
+      DATABASE_HOST: db
+      DATABASE_PORT: "5432"
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
