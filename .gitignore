@@ -6,3 +6,4 @@ node_modules/
 dist/
 build/
 db.sqlite3 # SQLite database file, only for tests
+dados_local.json
