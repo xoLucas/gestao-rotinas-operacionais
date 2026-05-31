@@ -1,7 +1,8 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-
 from apps.accounts.models import OperatorProfile
+from django.contrib.auth import authenticate
+from rest_framework.authtoken.models import Token
 
 
 User = get_user_model()
@@ -39,3 +40,26 @@ class CurrentUserSerializer(serializers.ModelSerializer):
             "is_superuser",
             "operator_profile",
         ]
+
+class LoginSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField(write_only=True)
+
+    def validate(self, attrs):
+        username = attrs.get("username")
+        password = attrs.get("password")
+
+        user = authenticate(username=username, password=password)
+
+        if not user:
+            raise serializers.ValidationError("Usuário ou senha inválidos.")
+
+        if not user.is_active:
+            raise serializers.ValidationError("Usuário inativo.")
+
+        token, created = Token.objects.get_or_create(user=user)
+
+        attrs["user"] = user
+        attrs["token"] = token.key
+
+        return attrs
