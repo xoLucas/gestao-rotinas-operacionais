@@ -75,6 +75,19 @@ class SyncExecutionSerializer(serializers.Serializer):
     observation = serializers.CharField(allow_blank=True, required=False)
     outside_geofence_justification = serializers.CharField(allow_blank=True, required=False)
     has_abnormality = serializers.BooleanField(default=False)
-    
-    # Lista de resultados das etapas aninhada
     steps = SyncStepResultSerializer(many=True, required=False)
+
+    def validate(self, data):
+        # Regra 1: Se o status for concluído, tem de ter data de conclusão
+        if data.get('status') == 'completed' and not data.get('completed_at'):
+            raise serializers.ValidationError({
+                "completed_at": "A data de conclusão (completed_at) é obrigatória quando o status é 'completed'."
+            })
+        
+        # Regra 2: Se tem anormalidade, a observação deveria ser preenchida
+        if data.get('has_abnormality') and not data.get('observation'):
+            raise serializers.ValidationError({
+                "observation": "É necessário preencher a observação quando é reportada uma anormalidade."
+            })
+            
+        return data
