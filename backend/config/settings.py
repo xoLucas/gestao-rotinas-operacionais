@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
-from decouple import config
+from decouple import Csv, config
 
 load_dotenv() # Carrega as variáveis de ambiente do arquivo .env
 
@@ -30,7 +30,11 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default='False') == 'True'
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "0.0.0.0"] # Permite conexões de qualquer host (útil para desenvolvimento e Docker)
+ALLOWED_HOSTS = config(
+    'ALLOWED_HOSTS',
+    default='*' if DEBUG else 'localhost,127.0.0.1,0.0.0.0',
+    cast=Csv(),
+)
 
 
 # Application definition
