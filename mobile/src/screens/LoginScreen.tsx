@@ -16,6 +16,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import * as SecureStore from 'expo-secure-store';
 import api from '../services/api';
+import { useAuthStore } from '../store/authStore';
 
 const THEME = {
   primary: '#18274E',    
@@ -31,7 +32,9 @@ export default function LoginScreen({ navigation }: any) {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  // A PALAVRA "async" AQUI É O QUE RESOLVE O ERRO:
+  // ---> PUXANDO A FUNÇÃO DE LOGIN DO ZUSTAND <---
+  const loginAction = useAuthStore((state) => state.login);
+
   const handleLogin = async () => {
     if (!username || !password) {
       Alert.alert('Atenção', 'Por favor, preencha o Usuário e a Senha.');
@@ -47,19 +50,25 @@ export default function LoginScreen({ navigation }: any) {
         password: password,
       });
 
-      // Extrai e guarda o token e os dados do usuário no celular
+      // Extrai a resposta da API
       const token = response.data.token;
-      const user = JSON.stringify(response.data.user);
+      const user = response.data.user;
 
+      // Mantém os dados guardados fisicamente no celular (útil para o futuro, para não deslogar ao fechar o app)
       await SecureStore.setItemAsync('userToken', token);
-      await SecureStore.setItemAsync('userData', user);
+      await SecureStore.setItemAsync('userData', JSON.stringify(user));
 
       setUsername('');
       setPassword('');
-      Alert.alert('Sucesso!', 'Login realizado com sucesso.');
       
-      // TODO: Mandar para a Dashboard
-      // navigation.replace('Dashboard');
+      // ---> A MÁGICA ACONTECE AQUI <---
+      // Disparamos o estado global. O AppNavigator escutará isso imediatamente
+      // destruindo esta tela e montando a DashboardScreen instantaneamente.
+      loginAction(token, {
+        id: user.id.toString(),
+        name: user.first_name || user.username,
+        team: user.operator_profile?.team_name || 'Sem Equipe'
+      });
 
     } catch (error: any) {
       console.error('Erro no login:', error);
